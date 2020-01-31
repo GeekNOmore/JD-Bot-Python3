@@ -60,8 +60,6 @@ cd E:\downloads\JD-Bot-Python3
 
 ##### 最终输入
 
-获取帮助
-
 ```cmd
 python3 JDspider.py -h 
 ```
@@ -90,24 +88,14 @@ cd 复制刚才的路径并去掉末尾的 JDspider.py
 
 ##### 最终输入
 
-获取帮助
-
-```cmd
-python3 JDspider.py -h 
-```
-
-或直接开始下单
-
 ```cmd
 python3 JDspider.py -a 地区ID -g 商品ID
 ```
 
-### 
-
 ## 帮助
 
 ``` cmd
-> python JDspider.py -h
+> python3 JDspider.py -h
 JDspider.py [-h] [-a AREA] [-g GOOD] [-c COUNT] [-w WAIT] [-f] [-s]
 
 Simulate to login Jing Dong, and buy good automatically
