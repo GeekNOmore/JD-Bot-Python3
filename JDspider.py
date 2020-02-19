@@ -174,7 +174,7 @@ class JDSpider:
                 print(f"二维码登录校验失败:{response.status_code}")
                 return False
 
-            # 京东有时候会认为当前登录有危险，需要手动验证
+            # 需要手动验证
             # url: https://safe.jd.com/dangerousVerify/index.action?username=...
             res = json.loads(response.text)
             if not response.headers.get('p3p'):
@@ -450,11 +450,11 @@ class JDSpider:
             'pid': pid,
             'pcount': num,
             'ptype': '1',
-            'targetId':    '0',
-            'promoID':    '0',
+            'targetId': '0',
+            'promoID': '0',
             'outSkus': '',
-                'random':    random.random(),
-                'locationId':   locationId,
+            'random': random.random(),
+            'locationId': locationId,
         }
         res = self.sess.post(url, data=data, cookies=self.cookies)
         assert res.status_code == 200
@@ -518,6 +518,20 @@ def send_email(subject, message):
             logging.error(e)
 """
 
+def should_monitor(clock):
+    if clock == '':
+        return True
+    else:
+        [sys_hour, sys_min, sys_sec] = map(int, time.strftime('%H:%M:%S').split(':'))
+        [c_hour, c_min, c_sec] = map(int, clock.split(':'))
+        if sys_hour > c_hour:
+            return True
+        if sys_hour >= c_hour and sys_min > c_min:
+            return True
+        if sys_hour >= c_hour and sys_min >= c_min and sys_sec >= c_sec:
+            return True
+        return False
+
 if __name__ == '__main__':
 
     # help message
@@ -540,8 +554,14 @@ if __name__ == '__main__':
                         action='store_false',
                         help='Submit the order to Jing Dong, default True. By adding this argument, set the progrom to not submit order',
                         default=True)
+    parser.add_argument('-t', '--timer',
+                        type=str,
+                        help='Set time to start monitoring. e.g. \"23:59:58\" , if no setting, start immediately',
+                        default="")
 
     options = parser.parse_args()
+
+    
 
 
     spider = JDSpider()
@@ -549,5 +569,9 @@ if __name__ == '__main__':
         if not spider.login_by_QR():
             sys.exit(-1)
 
-    while not spider.buy(options) and options.flush:
-        time.sleep(options.wait / 1000.0)
+    while True:
+        if should_monitor(options.timer):
+            while not spider.buy(options) and options.flush:
+                time.sleep(options.wait / 1000.0)
+            break
+        time.sleep(1)

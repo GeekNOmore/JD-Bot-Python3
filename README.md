@@ -14,9 +14,9 @@ Python爬虫，扫码登录京东网站，查询商品库存，价格，显示�
 
 使用可以检查网页元素的浏览器如 Chrome 或 Firefox，将鼠标移到商品页面 配送至xxxx地区 的位置。
 
-右键，点击检查/审查，复制 data-id 中的内容，如 1_72_2799_0 即代表北京地区。
+右键，点击检查/审查，复制 data-id 中的内容，如 1-72-2799-0 即代表北京地区。
 
-将其中的 _ 替换成 - 即可得到 area_id：1_72_2799_0 ==> 1-72-2799-0
+将其中的 - 替换成 _ 即可得到 area_id：1-72-2799-0 ==> 1_72_2799_0
 
 ### 获取商品代码即 good_ID 的方法：
 
@@ -70,6 +70,8 @@ python3 JDspider.py -h
 python3 JDspider.py -a 地区ID -g 商品ID
 ```
 
+用京东 App 扫描弹出的二维码登陆后脚本会自动加购物车下单。
+
 ### macOS
 
 ##### 打开终端
@@ -92,6 +94,8 @@ cd 复制刚才的路径并去掉末尾的 JDspider.py
 python3 JDspider.py -a 地区ID -g 商品ID
 ```
 
+用京东 App 扫描弹出的二维码登陆后脚本会自动加购物车下单。
+
 ## 帮助
 
 ``` cmd
@@ -112,5 +116,8 @@ optional arguments:
   -f, --flush           Continue flash if good out of stock, default True.
   -s, --submit          Submit the order to Jing Dong, default True. By adding
                         this argument, set the progrom to not submit order
+  -t TIMER, --timer TIMER
+                        Set time to start monitoring. e.g. "23:59:58" , if no
+                        setting, start immediately
 ```
 
